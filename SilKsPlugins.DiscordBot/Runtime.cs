@@ -49,7 +49,9 @@ namespace SilKsPlugins.DiscordBot
 
             if (File.Exists(resourcePath)) return;
 
-            using var stream = GetType().Assembly.GetManifestResourceStream("NBCovidBot." + resource);
+            var assembly = GetType().Assembly;
+
+            using var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{resource}");
             using var reader = new StreamReader(stream ?? throw new MissingManifestResourceException("Missing embedded resource"));
 
             var contents = reader.ReadToEnd();
