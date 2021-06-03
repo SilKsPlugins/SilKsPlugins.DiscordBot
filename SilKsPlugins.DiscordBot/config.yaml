@@ -1,0 +1,17 @@
+﻿Token: "CHANGEME"
+
+Commands:
+  Prefix: "!"
+
+UserUpdates:
+  Reactions:
+    Subscribe: "✅"
+    Unsubscribe: "❌"
+  RoleName: "covid-updates"
+
+Database:
+  ConnectionStrings:
+    Default: "Server=localhost; Database=NBCovidBot; User Id=username; Password=password"
+
+Admins:
+- "AnExampleAdmin#1234"
