@@ -11,7 +11,7 @@ UserUpdates:
 
 Database:
   ConnectionStrings:
-    Default: "Server=localhost; Database=NBCovidBot; User Id=username; Password=password"
+    Default: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
 
 Admins:
 - "AnExampleAdmin#1234"
