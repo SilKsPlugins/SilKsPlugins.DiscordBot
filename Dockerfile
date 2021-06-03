@@ -14,5 +14,5 @@ RUN dotnet publish "SilKsPlugins.DiscordBot.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /storage
-COPY --from=publish /app/publish .
+COPY --from=publish /app/publish /app
 ENTRYPOINT ["dotnet", "/app/SilKsPlugins.DiscordBot.dll"]
