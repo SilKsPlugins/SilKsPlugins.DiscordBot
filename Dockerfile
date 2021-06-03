@@ -13,6 +13,6 @@ FROM build AS publish
 RUN dotnet publish "SilKsPlugins.DiscordBot.csproj" -c Release -o /app/publish
 
 FROM base AS final
-WORKDIR /app
+WORKDIR /storage
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SilKsPlugins.DiscordBot.dll"]
+ENTRYPOINT ["dotnet", "/app/SilKsPlugins.DiscordBot.dll"]
