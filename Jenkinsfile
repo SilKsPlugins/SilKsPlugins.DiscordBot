@@ -16,8 +16,9 @@ node {
     
     stage('Deploy container') {
         sh '''
+            docker stop silksplugins-discordbot
             docker rm silksplugins-discordbot
-            docker run -d -v /var/lib/docker/volumes/silksplugins-discordbot/_data:/storage --name silksplugins-discordbot silksplugins-discordbot:latest
+            docker run -d -v silksplugins-discordbot:/storage --name silksplugins-discordbot silksplugins-discordbot:latest
         '''
     }
 }
