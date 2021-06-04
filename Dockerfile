@@ -1,18 +1,13 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-WORKDIR /app
-
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["SilKsPlugins.DiscordBot/SilKsPlugins.DiscordBot.csproj", "SilKsPlugins.DiscordBot/"]
-RUN dotnet restore "SilKsPlugins.DiscordBot/SilKsPlugins.DiscordBot.csproj"
+
+COPY "SilKsPlugins.DiscordBot/*.csproj" "SilKsPlugins.DiscordBot/"
+RUN dotnet restore SilKsPlugins.DiscordBot
+
 COPY . .
-WORKDIR "/src/SilKsPlugins.DiscordBot"
-RUN dotnet build "SilKsPlugins.DiscordBot.csproj" -c Release -o /app/build
+RUN dotnet publish SilKsPlugins.DiscordBot -c Release -o /app/publish
 
-FROM build AS publish
-RUN dotnet publish "SilKsPlugins.DiscordBot.csproj" -c Release -o /app/publish
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /data
-COPY --from=publish /app/publish /app
+COPY --from=build /app/publish /app
 ENTRYPOINT ["dotnet", "/app/SilKsPlugins.DiscordBot.dll"]
