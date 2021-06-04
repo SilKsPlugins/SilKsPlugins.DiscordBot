@@ -16,9 +16,30 @@ node {
     
     stage('Deploy container') {
         sh '''
+            # Stop silksplugins-discordbot docker if it's running
             docker ps -q --filter "name=silksplugins-discordbot" | grep -q . && docker stop silksplugins-discordbot
+
+            # Remove silksplugins-discordbot docker if it exists
             docker ps -a -q --filter "name=silksplugins-discordbot" | grep -q . && docker rm -fv silksplugins-discordbot
-            docker run -d -v silksplugins-discordbot:/data --name silksplugins-discordbot silksplugins-discordbot:latest
+
+            # Create silksplugins-discordbot network if it doesn't exist
+            docker network ls -q --filter "name=silksplugins-discordbot" | grep -q . || docker network create silksplugins-discordbot
+
+            # Create and start nbcovidbot container
+            docker run -d \
+                -v silksplugins-discordbot:/data \
+                --network silksplugins-discordbot \
+                --name silksplugins-discordbot
+                silksplugins-discordbot:latest
+        '''
+    }
+
+    stage('Connect MariaDb container to network') {
+        sh '''
+            # Connect mariadb-main to network if not already connected
+            docker network inspect silksplugins-discordbot \
+                -f "{{ range .Containers }}{{.Name}} {{ end }}" | grep -q mariadb-main \
+                || docker network connect silksplugins-discordbot mariadb-main
         '''
     }
 }
