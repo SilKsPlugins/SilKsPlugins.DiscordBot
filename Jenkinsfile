@@ -18,7 +18,7 @@ node {
         sh '''
             docker ps -q --filter "name=silksplugins-discordbot" | grep -q . && docker stop silksplugins-discordbot
             docker ps -a -q --filter "name=silksplugins-discordbot" | grep -q . && docker rm -fv silksplugins-discordbot
-            docker run -d -v silksplugins-discordbot:/storage --name silksplugins-discordbot silksplugins-discordbot:latest
+            docker run -d -v silksplugins-discordbot:/data --name silksplugins-discordbot silksplugins-discordbot:latest
         '''
     }
 }
