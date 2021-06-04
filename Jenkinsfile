@@ -16,8 +16,7 @@ node {
     
     stage('Deploy container') {
         sh '''
-            docker stop silksplugins-discordbot
-            docker rm silksplugins-discordbot
+            docker ps -a -q --filter "name=silksplugins-discordbot" | grep -q . && docker stop silksplugins-discordbot && docker rm -fv silksplugins-discordbot
             docker run -d -v silksplugins-discordbot:/storage --name silksplugins-discordbot silksplugins-discordbot:latest
         '''
     }
