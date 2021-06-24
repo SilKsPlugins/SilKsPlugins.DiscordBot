@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Discord;
+using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
 using System.IO;
 using System.Resources;
@@ -93,8 +94,9 @@ namespace SilKsPlugins.DiscordBot
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true))
                 .AddSingleton(this)
                 .AddSingleton<CommandHandler>()
+                .AddSingleton<IDiscordChannelLogConfigurer>(new DiscordChannelLogConfigurer())
                 .AddEntityFrameworkMySql()
-                .AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig{AlwaysDownloadUsers = true}))
+                .AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
                 .AddTransient(_ => new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async}))
                 .AddHostedService<DiscordBotService>();
         }
