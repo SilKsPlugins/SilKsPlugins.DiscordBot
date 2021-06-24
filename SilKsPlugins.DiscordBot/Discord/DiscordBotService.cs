@@ -3,8 +3,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Core;
 using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Logging;
 using System;
@@ -20,6 +18,7 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly IConfiguration _configuration;
         private readonly CommandHandler _commandHandler;
         private readonly DiscordSocketClient _client;
+        private readonly DiscordSink _discordSink;
         private readonly IServiceProvider _serviceProvider;
 
         public DiscordBotService(
@@ -28,6 +27,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             IConfiguration configuration,
             CommandHandler commandHandler,
             DiscordSocketClient client,
+            DiscordSink discordSink,
             IServiceProvider serviceProvider)
         {
             _runtime = runtime;
@@ -35,6 +35,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             _configuration = configuration;
             _commandHandler = commandHandler;
             _client = client;
+            _discordSink = discordSink;
             _serviceProvider = serviceProvider;
         }
 
@@ -64,10 +65,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Sink((ILogEventSink)Log.Logger)
-                .WriteTo.DiscordSink(_serviceProvider)
-                .CreateLogger();
+            _discordSink.Setup(_serviceProvider);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

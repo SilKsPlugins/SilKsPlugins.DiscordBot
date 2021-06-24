@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using Serilog.Events;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
@@ -11,25 +12,31 @@ namespace SilKsPlugins.DiscordBot.Logging
     public class DiscordSink : ILogEventSink
     {
         private readonly IFormatProvider? _formatProvider;
-        private readonly DiscordSocketClient _discordClient;
-        private readonly IDiscordChannelLogConfigurer _discordChannels;
+        private DiscordSocketClient? _discordClient;
+        private IDiscordChannelLogConfigurer? _discordChannels;
 
-        public DiscordSink(DiscordSocketClient discordClient,
-            IDiscordChannelLogConfigurer discordChannels)
+        public DiscordSink()
         {
-            _discordClient = discordClient;
-            _discordChannels = discordChannels;
         }
 
-        public DiscordSink(IFormatProvider formatProvider,
-            DiscordSocketClient discordClient,
-            IDiscordChannelLogConfigurer discordChannels) : this(discordClient, discordChannels)
+        public DiscordSink(IFormatProvider formatProvider)
         {
             _formatProvider = formatProvider;
         }
 
+        public void Setup(IServiceProvider serviceProvider)
+        {
+            _discordClient = serviceProvider.GetRequiredService<DiscordSocketClient>();
+            _discordChannels = serviceProvider.GetRequiredService<IDiscordChannelLogConfigurer>();
+        }
+
         public void Emit(LogEvent logEvent)
         {
+            if (_discordClient == null || _discordChannels == null)
+            {
+                return;
+            }
+
             if (_discordClient.ConnectionState != ConnectionState.Connected)
             {
                 return;

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Discord;
+using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
 using System.IO;
@@ -22,6 +23,8 @@ namespace SilKsPlugins.DiscordBot
         public IConfiguration Configuration { get; private set; } = null!;
 
         public string WorkingDirectory { get; private set; } = null!;
+
+        private readonly DiscordSink _discordSink = new();
 
         public async Task InitAsync()
         {
@@ -72,6 +75,7 @@ namespace SilKsPlugins.DiscordBot
                 .Build();
 
             var loggerConfiguration = new LoggerConfiguration()
+                .WriteTo.Sink(_discordSink)
                 .ReadFrom.Configuration(configuration);
 
             Log.Logger = loggerConfiguration.CreateLogger();
@@ -95,6 +99,7 @@ namespace SilKsPlugins.DiscordBot
                 .AddSingleton(this)
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<IDiscordChannelLogConfigurer>(new DiscordChannelLogConfigurer())
+                .AddSingleton(_discordSink)
                 .AddEntityFrameworkMySql()
                 .AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
                 .AddTransient(_ => new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async}))
