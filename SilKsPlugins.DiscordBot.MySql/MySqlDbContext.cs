@@ -14,10 +14,14 @@ namespace SilKsPlugins.DiscordBot.MySql
             _configuration = serviceProvider.GetRequiredService<IConfiguration>();
         }
 
+        protected virtual string GetConnectionStringName() => "Default";
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql(_configuration["Database:ConnectionStrings:Default"],
-                MariaDbServerVersion.LatestSupportedServerVersion);
+            var connectionStringName = GetConnectionStringName();
+            var connectionString = _configuration[$"Database:ConnectionStrings:{connectionStringName}"];
+
+            optionsBuilder.UseMySql(connectionString, MariaDbServerVersion.LatestSupportedServerVersion);
         }
     }
 }
