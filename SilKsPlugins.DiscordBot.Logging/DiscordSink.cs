@@ -54,7 +54,12 @@ namespace SilKsPlugins.DiscordBot.Logging
                         continue;
                     }
 
-                    channel.SendMessageAsync(message);
+                    channel.SendMessageAsync(embed: new EmbedBuilder()
+                        .AddField(logEvent.Level.ToString(), message)
+                        .WithCurrentTimestamp()
+                        .Build());
+
+
                 }
                 catch (Exception ex)
                 {
