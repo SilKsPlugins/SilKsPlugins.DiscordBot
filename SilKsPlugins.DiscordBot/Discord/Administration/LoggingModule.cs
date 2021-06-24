@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using JetBrains.Annotations;
+using SilKsPlugins.DiscordBot.Databases.Administration;
+using SilKsPlugins.DiscordBot.Databases.Administration.Models;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System.Threading.Tasks;
@@ -11,10 +13,13 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
     public class LoggingModule : ModuleBase<SocketCommandContext>
     {
         private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
+        private readonly AdministrationDbContext _dbContext;
 
-        public LoggingModule(IDiscordChannelLogConfigurer discordLogConfigurer)
+        public LoggingModule(IDiscordChannelLogConfigurer discordLogConfigurer,
+            AdministrationDbContext dbContext)
         {
             _discordLogConfigurer = discordLogConfigurer;
+            _dbContext = dbContext;
         }
 
         [Command("startlogging")]
@@ -23,6 +28,18 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
         public async Task StartLoggingAsync()
         {
             var channelId = Context.Channel.Id;
+
+            var logChannel = await _dbContext.LogChannels.FindAsync(channelId);
+
+            if (logChannel == null)
+            {
+                await _dbContext.LogChannels.AddAsync(new LogChannel
+                {
+                    ChannelId = channelId
+                });
+
+                await _dbContext.SaveChangesAsync();
+            }
 
             if (_discordLogConfigurer.AddChannel(channelId))
             {
@@ -46,6 +63,15 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
         public async Task StopLoggingAsync()
         {
             var channelId = Context.Channel.Id;
+
+            var logChannel = await _dbContext.LogChannels.FindAsync(channelId);
+
+            if (logChannel != null)
+            {
+                _dbContext.LogChannels.Remove(logChannel);
+
+                await _dbContext.SaveChangesAsync();
+            }
 
             if (_discordLogConfigurer.RemoveChannel(channelId))
             {

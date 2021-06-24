@@ -1,10 +1,13 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SilKsPlugins.DiscordBot.Commands;
+using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Logging;
+using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +22,8 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly CommandHandler _commandHandler;
         private readonly DiscordSocketClient _client;
         private readonly DiscordSink _discordSink;
+        private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
+        private readonly AdministrationDbContext _administrationDbContext;
         private readonly IServiceProvider _serviceProvider;
 
         public DiscordBotService(
@@ -28,6 +33,8 @@ namespace SilKsPlugins.DiscordBot.Discord
             CommandHandler commandHandler,
             DiscordSocketClient client,
             DiscordSink discordSink,
+            IDiscordChannelLogConfigurer discordLogConfigurer,
+            AdministrationDbContext administrationDbContext,
             IServiceProvider serviceProvider)
         {
             _runtime = runtime;
@@ -37,10 +44,14 @@ namespace SilKsPlugins.DiscordBot.Discord
             _client = client;
             _discordSink = discordSink;
             _serviceProvider = serviceProvider;
+            _discordLogConfigurer = discordLogConfigurer;
+            _administrationDbContext = administrationDbContext;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            await _administrationDbContext.Database.MigrateAsync(cancellationToken);
+
             var token = _configuration["Token"];
 
             if (string.IsNullOrWhiteSpace(token) || token == "CHANGEME")
@@ -66,6 +77,11 @@ namespace SilKsPlugins.DiscordBot.Discord
             await _client.StartAsync();
 
             _discordSink.Setup(_serviceProvider);
+
+            await foreach (var channel in _administrationDbContext.LogChannels)
+            {
+                _discordLogConfigurer.AddChannel(channel.ChannelId);
+            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

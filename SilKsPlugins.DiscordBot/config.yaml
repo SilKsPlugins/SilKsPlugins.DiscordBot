@@ -12,6 +12,7 @@ UserUpdates:
 Database:
   ConnectionStrings:
     Default: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
+    Administration: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
 
 Admins:
 - "AnExampleAdmin#1234"
