@@ -82,7 +82,7 @@ namespace SilKsPlugins.DiscordBot.Commands
             {
                 await message.Channel.SendMessageAsync(execResult.Exception.Message);
             }
-            else
+            else if (result.Error != CommandError.UnknownCommand)
             {
                 _logger.LogWarning(
                     $"Error ({result.Error}) occurred while executing command {message.Content} - {result.ErrorReason}");
