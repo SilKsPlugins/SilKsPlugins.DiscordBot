@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace SilKsPlugins.DiscordBot.Database
+namespace SilKsPlugins.DiscordBot.MySql
 {
     public class MySqlDbContextFactory<TDbContext> : IDesignTimeDbContextFactory<TDbContext> where TDbContext : MySqlDbContext
     {
