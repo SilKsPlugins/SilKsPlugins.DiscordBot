@@ -5,7 +5,7 @@ using System;
 
 namespace SilKsPlugins.DiscordBot.Database
 {
-    public class MySqlDbContext : DbContext
+    public abstract class MySqlDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
 
