@@ -74,6 +74,14 @@ namespace SilKsPlugins.DiscordBot.Commands
                 _logger.LogDebug(
                     $"Successfully executed command {message.Content} in {stopwatch.ElapsedMilliseconds} ms");
             }
+            else if (result is ExecuteResult
+            {
+                Error: CommandError.Exception,
+                Exception: UserFriendlyException
+            } execResult)
+            {
+                await message.Channel.SendMessageAsync(execResult.Exception.Message);
+            }
             else
             {
                 _logger.LogWarning(
