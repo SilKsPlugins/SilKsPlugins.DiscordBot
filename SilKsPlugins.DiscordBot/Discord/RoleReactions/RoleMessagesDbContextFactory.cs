@@ -1,4 +1,4 @@
-﻿using SilKsPlugins.DiscordBot.Database;
+﻿using SilKsPlugins.DiscordBot.MySql;
 
 namespace SilKsPlugins.DiscordBot.Discord.RoleReactions
 {
