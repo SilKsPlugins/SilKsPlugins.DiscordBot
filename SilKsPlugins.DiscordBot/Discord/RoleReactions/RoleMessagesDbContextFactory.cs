@@ -2,7 +2,7 @@
 
 namespace SilKsPlugins.DiscordBot.Discord.RoleReactions
 {
-    public class RoleMessagesDbContextFactory : DesignTimeDbContextFactory<RoleMessagesDbContext>
+    public class RoleMessagesDbContextFactory : MySqlDbContextFactory<RoleMessagesDbContext>
     {
     }
 }
