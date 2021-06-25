@@ -23,6 +23,7 @@ namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
 
             var roleMessage = new RoleMessage
             {
+                GuildId = guildId,
                 ChannelId = channelId,
                 MessageId = messageId,
                 RoleId = roleId
