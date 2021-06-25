@@ -1,4 +1,5 @@
-﻿using SilKsPlugins.DiscordBot.Databases.RoleReactions;
+﻿using Discord.WebSocket;
+using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions.Models;
 using System.Threading.Tasks;
 
@@ -13,9 +14,9 @@ namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> AddRoleToMessage(ulong channelId, ulong messageId, ulong roleId)
+        public async Task<bool> AddRoleToMessage(ulong guildId, ulong channelId, ulong messageId, ulong roleId)
         {
-            if (await _dbContext.RoleMessages.FindAsync(channelId, messageId) != null)
+            if (await _dbContext.RoleMessages.FindAsync(guildId, channelId, messageId) != null)
             {
                 return false;
             }
@@ -34,9 +35,9 @@ namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
             return true;
         }
 
-        public async Task<bool> RemoveRoleFromMessage(ulong channelId, ulong messageId)
+        public async Task<bool> RemoveRoleFromMessage(ulong guildId, ulong channelId, ulong messageId)
         {
-            var roleMessage = await _dbContext.RoleMessages.FindAsync(channelId, messageId);
+            var roleMessage = await _dbContext.RoleMessages.FindAsync(guildId, channelId, messageId);
 
             if (roleMessage == null)
             {
@@ -50,9 +51,9 @@ namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
             return true;
         }
 
-        public async Task<ulong?> GetRoleForMessage(ulong channelId, ulong messageId)
+        public async Task<ulong?> GetRoleForMessage(ulong guildId, ulong channelId, ulong messageId)
         {
-            var roleMessage = await _dbContext.RoleMessages.FindAsync(channelId, messageId);
+            var roleMessage = await _dbContext.RoleMessages.FindAsync(guildId, channelId, messageId);
 
             return roleMessage?.RoleId;
         }
