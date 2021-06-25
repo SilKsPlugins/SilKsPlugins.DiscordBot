@@ -7,18 +7,20 @@ using SilKsPlugins.DiscordBot.Databases.Administration.Models;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
 using SilKsPlugins.DiscordBot.Helpers;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
+using System;
 using System.Threading.Tasks;
 
 namespace SilKsPlugins.DiscordBot.Discord.Administration
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    public class LoggingModule : ModuleBase<SocketCommandContext>
+    public class LoggingModule : CustomModuleBase<SocketCommandContext>
     {
         private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
         private readonly AdministrationDbContext _dbContext;
 
         public LoggingModule(IDiscordChannelLogConfigurer discordLogConfigurer,
-            AdministrationDbContext dbContext)
+            AdministrationDbContext dbContext,
+            IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _discordLogConfigurer = discordLogConfigurer;
             _dbContext = dbContext;
@@ -45,8 +47,8 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
 
             if (_discordLogConfigurer.AddChannel(channelId))
             {
-                await ReplyAsync(
-                    embed: EmbedHelper.SimpleEmbed("This channel has been setup for logging.", Color.Green));
+                await ReplyAndDeleteAsync(embed: EmbedHelper.SimpleEmbed("This channel has been setup for logging.",
+                    Color.Green));
             }
             else
             {
@@ -72,7 +74,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
 
             if (_discordLogConfigurer.RemoveChannel(channelId))
             {
-                await ReplyAsync(embed: EmbedHelper.SimpleEmbed("This channel has been removed from logging.",
+                await ReplyAndDeleteAsync(embed: EmbedHelper.SimpleEmbed("This channel has been removed from logging.",
                     Color.Green));
             }
             else
