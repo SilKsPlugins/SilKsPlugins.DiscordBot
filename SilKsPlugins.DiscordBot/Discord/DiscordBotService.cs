@@ -36,7 +36,7 @@ namespace SilKsPlugins.DiscordBot.Discord
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var token = _configuration["Token"];
+            var token = _configuration["DiscordToken"];
 
             if (string.IsNullOrWhiteSpace(token) || token == "CHANGEME")
             {

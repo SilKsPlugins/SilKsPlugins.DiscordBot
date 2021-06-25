@@ -1,4 +1,9 @@
-﻿Token: "CHANGEME"
+﻿DiscordToken: "CHANGEME"
+
+Database:
+  ConnectionStrings:
+    Default: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
+    Administration: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
 
 Commands:
   Prefix: "!"
@@ -9,11 +14,6 @@ Commands:
 RoleReactions:
   Subscribe: "✅"
   Unsubscribe: "❌"
-
-Database:
-  ConnectionStrings:
-    Default: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
-    Administration: "Server=localhost; Port=3306; Database=silksplugins; User Id=username; Password=password"
 
 Admins:
 - "AnExampleAdmin#1234"
