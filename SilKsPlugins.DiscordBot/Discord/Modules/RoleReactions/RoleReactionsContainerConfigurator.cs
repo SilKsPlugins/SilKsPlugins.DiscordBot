@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using JetBrains.Annotations;
 using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
+using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services.API;
 using SilKsPlugins.DiscordBot.IoC;
 
 namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions

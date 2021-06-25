@@ -1,6 +1,7 @@
 ﻿using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions.Models;
 using System.Threading.Tasks;
+using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services.API;
 
 namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services
 {

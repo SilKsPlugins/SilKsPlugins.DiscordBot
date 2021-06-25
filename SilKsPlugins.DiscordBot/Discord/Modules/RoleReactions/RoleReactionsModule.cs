@@ -7,6 +7,7 @@ using SilKsPlugins.DiscordBot.Discord.Preconditions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services.API;
 
 namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions
 {

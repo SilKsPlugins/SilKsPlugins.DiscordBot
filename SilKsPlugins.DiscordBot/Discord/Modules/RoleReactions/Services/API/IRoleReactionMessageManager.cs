@@ -1,7 +1,7 @@
 ﻿using Discord;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services
+namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services.API
 {
     public interface IRoleReactionMessageManager
     {
