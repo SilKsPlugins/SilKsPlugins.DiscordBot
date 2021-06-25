@@ -4,7 +4,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using SilKsPlugins.DiscordBot.Helpers;
 using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -39,13 +38,53 @@ namespace SilKsPlugins.DiscordBot.Commands
         public async Task InstallCommandsAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
+            Commands.CommandExecuted += OnCommandExecuted;
             
             await Commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
-        
+
+        private async Task OnCommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        {
+            if (result.IsSuccess)
+            {
+                _logger.LogDebug(
+                    $"Successfully executed command {context.Message.Content}.");
+            }
+            else if (result is ExecuteResult
+            {
+                Error: CommandError.Exception,
+                Exception: UserFriendlyException
+            } execResult)
+            {
+                var reply = await context.Message.Channel.SendMessageAsync(
+                    embed: EmbedHelper.SimpleEmbed(execResult.Exception.Message, Color.Red));
+
+                _logger.LogDebug(
+                    $"Successfully executed command {context.Message.Content} ({nameof(UserFriendlyException)}).");
+
+                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+
+                await reply.DeleteAsync();
+            }
+            else if (result.Error != CommandError.UnknownCommand)
+            {
+                _logger.LogWarning(
+                    $"Error ({result.Error}) occurred while executing command {context.Message.Content} - {result.ErrorReason}");
+
+                var reply = await context.Channel.SendMessageAsync(
+                    embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
+                        Color.Red));
+
+                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+
+                await reply.DeleteAsync();
+            }
+        }
+
         public void Dispose()
         {
             _client.MessageReceived -= HandleCommandAsync;
+            Commands.CommandExecuted -= OnCommandExecuted;
         }
 
         private async Task HandleCommandAsync(SocketMessage message)
@@ -64,45 +103,8 @@ namespace SilKsPlugins.DiscordBot.Commands
             var context = new SocketCommandContext(_client, userMessage);
 
             _logger.LogInformation($"Executing command '{userMessage.Content}' from user {userMessage.Author}.");
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var result = await Commands.ExecuteAsync(context, argPos, _services);
-
-            stopwatch.Stop();
-
-            if (result.IsSuccess)
-            {
-                _logger.LogDebug(
-                    $"Successfully executed command {message.Content} in {stopwatch.ElapsedMilliseconds} ms");
-            }
-            else if (result is ExecuteResult
-            {
-                Error: CommandError.Exception,
-                Exception: UserFriendlyException
-            } execResult)
-            {
-                var reply = await message.Channel.SendMessageAsync(embed: EmbedHelper.SimpleEmbed(execResult.Exception.Message,
-                    Color.Red));
-
-                await Task.Delay(_configuration.DeleteErrorReplyDelay);
-
-                await reply.DeleteAsync();
-            }
-            else if (result.Error != CommandError.UnknownCommand)
-            {
-                _logger.LogWarning(
-                    $"Error ({result.Error}) occurred while executing command {message.Content} - {result.ErrorReason}");
-
-                var reply = await message.Channel.SendMessageAsync(
-                    embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
-                        Color.Red));
-
-                await Task.Delay(_configuration.DeleteErrorReplyDelay);
-
-                await reply.DeleteAsync();
-            }
+            
+            await Commands.ExecuteAsync(context, argPos, _services);
         }
     }
 }
