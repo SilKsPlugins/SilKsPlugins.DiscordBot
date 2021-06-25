@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SilKsPlugins.DiscordBot.Components;
 using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Discord.Commands;
@@ -26,6 +27,7 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
         private readonly AdministrationDbContext _administrationDbContext;
         private readonly RoleReactionsDbContext _roleReactionsDbContext;
+        private readonly ComponentManager _componentManager;
         private readonly IServiceProvider _serviceProvider;
 
         public DiscordBotService(
@@ -38,6 +40,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             IDiscordChannelLogConfigurer discordLogConfigurer,
             AdministrationDbContext administrationDbContext,
             RoleReactionsDbContext roleReactionsDbContext,
+            ComponentManager componentManager,
             IServiceProvider serviceProvider)
         {
             _runtime = runtime;
@@ -50,6 +53,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             _discordLogConfigurer = discordLogConfigurer;
             _administrationDbContext = administrationDbContext;
             _roleReactionsDbContext = roleReactionsDbContext;
+            _componentManager = componentManager;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -74,6 +78,8 @@ namespace SilKsPlugins.DiscordBot.Discord
                 return;
             }
 
+            await _componentManager.StartAsync(cancellationToken);
+
             _client.Log += OnLog;
 
             await _commandHandler.InstallCommandsAsync();
@@ -94,6 +100,8 @@ namespace SilKsPlugins.DiscordBot.Discord
             await _client.StopAsync();
 
             _client.Log -= OnLog;
+
+            await _componentManager.StopAsync(cancellationToken);
         }
 
         private Task OnLog(LogMessage arg)
