@@ -74,7 +74,25 @@ namespace SilKsPlugins.DiscordBot.Discord
 
         private Task OnLog(LogMessage log)
         {
-            _logger.LogInformation(log.Message);
+            var logLevel = log.Severity switch
+            {
+                LogSeverity.Verbose => LogLevel.Debug,
+                LogSeverity.Debug => LogLevel.Debug,
+                LogSeverity.Info => LogLevel.Information,
+                LogSeverity.Warning => LogLevel.Warning,
+                LogSeverity.Error => LogLevel.Error,
+                LogSeverity.Critical => LogLevel.Critical,
+                _ => LogLevel.None
+            };
+
+            if (log.Exception == null)
+            {
+                _logger.Log(logLevel, log.Message);
+            }
+            else
+            {
+                _logger.Log(logLevel, log.Exception, log.Message);
+            }
 
             return Task.CompletedTask;
         }
