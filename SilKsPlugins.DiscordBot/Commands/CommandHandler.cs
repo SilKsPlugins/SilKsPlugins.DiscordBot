@@ -1,28 +1,29 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SilKsPlugins.DiscordBot.Helpers;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
-using Discord;
-using SilKsPlugins.DiscordBot.Helpers;
 
 namespace SilKsPlugins.DiscordBot.Commands
 {
     public class CommandHandler : IDisposable
     {
         private readonly ILogger<CommandHandler> _logger;
-        private readonly IConfiguration _configuration;
+        private readonly CommandConfigAccessor _configuration;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
 
         public CommandService Commands { get; }
 
+        public float DefaultDeleteReplyWait => 15000;
+
         public CommandHandler(
             ILogger<CommandHandler> logger,
-            IConfiguration configuration,
+            CommandConfigAccessor configuration,
             DiscordSocketClient client,
             CommandService commands,
             IServiceProvider services)
@@ -53,7 +54,7 @@ namespace SilKsPlugins.DiscordBot.Commands
 
             var argPos = 0;
 
-            var prefix = _configuration["Commands:Prefix"];
+            var prefix = _configuration.CommandPrefix;
 
             if (string.IsNullOrWhiteSpace(prefix)) return;
 
@@ -82,16 +83,25 @@ namespace SilKsPlugins.DiscordBot.Commands
                 Exception: UserFriendlyException
             } execResult)
             {
-                await message.Channel.SendMessageAsync(execResult.Exception.Message);
+                var reply = await message.Channel.SendMessageAsync(embed: EmbedHelper.SimpleEmbed(execResult.Exception.Message,
+                    Color.Red));
+
+                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+
+                await reply.DeleteAsync();
             }
             else if (result.Error != CommandError.UnknownCommand)
             {
                 _logger.LogWarning(
                     $"Error ({result.Error}) occurred while executing command {message.Content} - {result.ErrorReason}");
 
-                await message.Channel.SendMessageAsync(
+                var reply = await message.Channel.SendMessageAsync(
                     embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
                         Color.Red));
+
+                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+
+                await reply.DeleteAsync();
             }
         }
     }

@@ -2,6 +2,9 @@
 
 Commands:
   Prefix: "!"
+  DeleteReplyDelay:
+    Standard: 15 # seconds
+    Error: 15 # seconds
 
 RoleReactions:
   Subscribe: "✅"
