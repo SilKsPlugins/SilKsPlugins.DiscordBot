@@ -14,5 +14,14 @@ namespace SilKsPlugins.DiscordBot.Databases.Administration
         protected override string GetConnectionStringName() => "Administration";
 
         public DbSet<LogChannel> LogChannels => Set<LogChannel>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LogChannel>()
+                .Property(x => x.ChannelId)
+                .ValueGeneratedNever();
+        }
     }
 }
