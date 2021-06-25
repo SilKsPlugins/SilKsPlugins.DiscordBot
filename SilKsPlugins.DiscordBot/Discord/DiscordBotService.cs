@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Databases.Administration;
+using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
@@ -24,6 +25,7 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly DiscordSink _discordSink;
         private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
         private readonly AdministrationDbContext _administrationDbContext;
+        private readonly RoleReactionsDbContext _roleReactionsDbContext;
         private readonly IServiceProvider _serviceProvider;
 
         public DiscordBotService(
@@ -35,6 +37,7 @@ namespace SilKsPlugins.DiscordBot.Discord
             DiscordSink discordSink,
             IDiscordChannelLogConfigurer discordLogConfigurer,
             AdministrationDbContext administrationDbContext,
+            RoleReactionsDbContext roleReactionsDbContext,
             IServiceProvider serviceProvider)
         {
             _runtime = runtime;
@@ -46,11 +49,13 @@ namespace SilKsPlugins.DiscordBot.Discord
             _serviceProvider = serviceProvider;
             _discordLogConfigurer = discordLogConfigurer;
             _administrationDbContext = administrationDbContext;
+            _roleReactionsDbContext = roleReactionsDbContext;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await _administrationDbContext.Database.MigrateAsync(cancellationToken);
+            await _roleReactionsDbContext.Database.MigrateAsync(cancellationToken);
 
             var token = _configuration["Token"];
 
