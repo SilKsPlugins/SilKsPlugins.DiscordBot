@@ -18,13 +18,10 @@ namespace SilKsPlugins.DiscordBot.Migrations.Administration
 
             modelBuilder.Entity("SilKsPlugins.DiscordBot.Databases.Administration.Models.LogChannel", b =>
                 {
-                    b.Property<ulong>("GuildId")
-                        .HasColumnType("bigint unsigned");
-
                     b.Property<ulong>("ChannelId")
                         .HasColumnType("bigint unsigned");
 
-                    b.HasKey("GuildId", "ChannelId");
+                    b.HasKey("ChannelId");
 
                     b.ToTable("LogChannels");
                 });
