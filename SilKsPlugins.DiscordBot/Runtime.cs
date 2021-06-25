@@ -1,4 +1,5 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Databases.Administration;
+using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Discord;
+using SilKsPlugins.DiscordBot.Discord.RoleReactions.Services;
 using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
@@ -39,6 +42,7 @@ namespace SilKsPlugins.DiscordBot
                 .UseContentRoot(WorkingDirectory)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureAppConfiguration(ConfigureConfiguration)
+                .ConfigureContainer<ContainerBuilder>(ConfigureContainer)
                 .ConfigureServices(SetupServices)
                 .UseSerilog();
 
@@ -94,15 +98,32 @@ namespace SilKsPlugins.DiscordBot
             Configuration = builder.Build();
         }
 
+        private void ConfigureContainer(ContainerBuilder container)
+        {
+            container.RegisterType<RoleReactionManager>()
+                .AsSelf()
+                .As<IRoleReactionManager>()
+                .InstancePerDependency();
+        }
+
         private void SetupServices(IServiceCollection services)
         {
+            // Runtime
+            services.AddSingleton(this);
+
+            // Logging
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true))
-                .AddSingleton(this)
-                .AddSingleton<CommandHandler>()
                 .AddSingleton<IDiscordChannelLogConfigurer>(new DiscordChannelLogConfigurer())
-                .AddSingleton(_discordSink)
-                .AddEntityFrameworkMySql()
+                .AddSingleton(_discordSink);
+
+            // Databases
+            services.AddEntityFrameworkMySql()
                 .AddDbContext<AdministrationDbContext>(ServiceLifetime.Transient)
+                .AddDbContext<RoleReactionsDbContext>(ServiceLifetime.Transient);
+
+            // Discord-related
+            services
+                .AddSingleton<CommandHandler>()
                 .AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
                 .AddTransient(_ => new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async}))
                 .AddHostedService<DiscordBotService>();
