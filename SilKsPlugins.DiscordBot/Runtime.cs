@@ -11,6 +11,8 @@ using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Discord;
 using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
+using SilKsPlugins.DiscordBot.Helpers;
+using SilKsPlugins.DiscordBot.IoC;
 using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
@@ -110,6 +112,16 @@ namespace SilKsPlugins.DiscordBot
                 .AsSelf()
                 .As<IRoleReactionMessageManager>()
                 .InstancePerDependency();
+
+            var context = new ContainerConfiguratorContext(container, Configuration);
+            var configuratorTypes = GetType().Assembly.FindTypes<IContainerConfigurator>();
+
+            foreach (var configuratorType in configuratorTypes)
+            {
+                var configurator = (IContainerConfigurator)Activator.CreateInstance(configuratorType)!;
+
+                configurator.ConfigureContainer(context);
+            }
         }
 
         private void SetupServices(IServiceCollection services)
@@ -135,6 +147,16 @@ namespace SilKsPlugins.DiscordBot
             // Discord main
             services.AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
                 .AddHostedService<DiscordBotService>();
+
+            var context = new ServiceConfiguratorContext(services, Configuration);
+            var configuratorTypes = GetType().Assembly.FindTypes<IServiceConfigurator>();
+
+            foreach (var configuratorType in configuratorTypes)
+            {
+                var configurator = (IServiceConfigurator)Activator.CreateInstance(configuratorType)!;
+
+                configurator.ConfigureServices(context);
+            }
         }
     }
 }
