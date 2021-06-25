@@ -37,8 +37,4 @@
     <ProjectReference Include="..\SilKsPlugins.DiscordBot.MySql\SilKsPlugins.DiscordBot.MySql.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Discord\NewFolder\" />
-  </ItemGroup>
-
 </Project>

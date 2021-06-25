@@ -1,16 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Discord.Commands;
-using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using SilKsPlugins.DiscordBot.Commands;
-using SilKsPlugins.DiscordBot.Databases.Administration;
-using SilKsPlugins.DiscordBot.Databases.RoleReactions;
-using SilKsPlugins.DiscordBot.Discord;
-using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
 using SilKsPlugins.DiscordBot.Helpers;
 using SilKsPlugins.DiscordBot.IoC;
 using SilKsPlugins.DiscordBot.Logging;
@@ -102,17 +95,7 @@ namespace SilKsPlugins.DiscordBot
 
         private void ConfigureContainer(ContainerBuilder container)
         {
-            // Role reactions
-            container.RegisterType<RoleReactionDatabaseManager>()
-                .AsSelf()
-                .As<IRoleReactionDatabaseManager>()
-                .InstancePerDependency();
-
-            container.RegisterType<RoleReactionMessageManager>()
-                .AsSelf()
-                .As<IRoleReactionMessageManager>()
-                .InstancePerDependency();
-
+            // Find, create instances, and use IContainerConfigurator implementation
             var context = new ContainerConfiguratorContext(container, Configuration);
             var configuratorTypes = GetType().Assembly.FindTypes<IContainerConfigurator>();
 
@@ -134,20 +117,7 @@ namespace SilKsPlugins.DiscordBot
                 .AddSingleton<IDiscordChannelLogConfigurer>(new DiscordChannelLogConfigurer())
                 .AddSingleton(_discordSink);
 
-            // Databases
-            services.AddEntityFrameworkMySql()
-                .AddDbContext<AdministrationDbContext>(ServiceLifetime.Transient)
-                .AddDbContext<RoleReactionsDbContext>(ServiceLifetime.Transient);
-
-            // Discord commands
-            services.AddSingleton<CommandHandler>()
-                .AddSingleton<CommandConfigAccessor>()
-                .AddTransient(_ => new CommandService(new CommandServiceConfig { DefaultRunMode = RunMode.Async }));
-
-            // Discord main
-            services.AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
-                .AddHostedService<DiscordBotService>();
-
+            // Find, create instances, and use IServiceConfigurator implementation
             var context = new ServiceConfiguratorContext(services, Configuration);
             var configuratorTypes = GetType().Assembly.FindTypes<IServiceConfigurator>();
 
