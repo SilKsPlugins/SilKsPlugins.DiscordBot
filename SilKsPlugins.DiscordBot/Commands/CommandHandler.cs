@@ -6,6 +6,8 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
+using Discord;
+using SilKsPlugins.DiscordBot.Helpers;
 
 namespace SilKsPlugins.DiscordBot.Commands
 {
@@ -88,7 +90,8 @@ namespace SilKsPlugins.DiscordBot.Commands
                     $"Error ({result.Error}) occurred while executing command {message.Content} - {result.ErrorReason}");
 
                 await message.Channel.SendMessageAsync(
-                    $"An error occurred while executing this command ({result.Error}).");
+                    embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
+                        Color.Red));
             }
         }
     }
