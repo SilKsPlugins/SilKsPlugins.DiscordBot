@@ -19,9 +19,17 @@ namespace SilKsPlugins.DiscordBot.Databases.Administration
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<LogChannel>()
-                .Property(x => x.ChannelId)
-                .ValueGeneratedNever();
+            modelBuilder.Entity<LogChannel>(entity =>
+            {
+                entity.HasKey(x => new {x.GuildId, x.ChannelId});
+
+                entity.Property(x => x.GuildId)
+                    .ValueGeneratedNever();
+
+                entity.Property(x => x.ChannelId)
+                    .ValueGeneratedNever();
+            });
+
         }
     }
 }
