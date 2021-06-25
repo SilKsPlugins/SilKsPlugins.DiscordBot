@@ -2,13 +2,13 @@
 using Discord.Commands;
 using JetBrains.Annotations;
 using SilKsPlugins.DiscordBot.Commands;
+using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
-using SilKsPlugins.DiscordBot.Discord.RoleReactions.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Discord.RoleReactions
+namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class RoleReactionsModule : CustomModuleBase<SocketCommandContext>

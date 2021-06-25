@@ -10,7 +10,7 @@ using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Discord.Administration
+namespace SilKsPlugins.DiscordBot.Discord.Modules.Administration
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class LoggingModule : CustomModuleBase<SocketCommandContext>

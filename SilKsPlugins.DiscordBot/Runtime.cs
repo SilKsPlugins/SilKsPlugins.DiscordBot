@@ -10,7 +10,7 @@ using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Discord;
-using SilKsPlugins.DiscordBot.Discord.RoleReactions.Services;
+using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
 using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;

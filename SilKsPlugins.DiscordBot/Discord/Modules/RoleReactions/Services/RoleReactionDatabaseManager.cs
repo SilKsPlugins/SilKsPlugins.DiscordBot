@@ -1,9 +1,8 @@
-﻿using Discord.WebSocket;
-using SilKsPlugins.DiscordBot.Databases.RoleReactions;
+﻿using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Databases.RoleReactions.Models;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
+namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services
 {
     public class RoleReactionDatabaseManager : IRoleReactionDatabaseManager
     {
