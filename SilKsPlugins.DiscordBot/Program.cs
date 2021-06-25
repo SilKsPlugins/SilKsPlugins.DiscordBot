@@ -7,7 +7,7 @@ namespace SilKsPlugins.DiscordBot
         public static async Task Main()
         {
             var runtime = new Runtime();
-            
+
             await runtime.InitAsync();
         }
     }

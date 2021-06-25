@@ -58,7 +58,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions
                 // isMentionable is required to choose otherwise ambiguous method
                 role = await Context.Guild.CreateRoleAsync(roleNameOrId, isMentionable: false);
             }
-            
+
             if (role == null)
             {
                 throw new UserFriendlyException("Role not found.");

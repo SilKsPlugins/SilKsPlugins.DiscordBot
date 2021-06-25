@@ -39,7 +39,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Commands
         {
             _client.MessageReceived += HandleCommandAsync;
             Commands.CommandExecuted += OnCommandExecuted;
-            
+
             await Commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
 
@@ -110,11 +110,11 @@ namespace SilKsPlugins.DiscordBot.Discord.Commands
 
             if (!userMessage.HasStringPrefix(prefix, ref argPos) || message.Author.IsBot)
                 return;
-            
+
             var context = new SocketCommandContext(_client, userMessage);
 
             _logger.LogInformation($"Executing command '{userMessage.Content}' from user {userMessage.Author}.");
-            
+
             await Commands.ExecuteAsync(context, argPos, _services);
         }
     }

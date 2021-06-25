@@ -19,7 +19,7 @@ namespace SilKsPlugins.DiscordBot.Databases.RoleReactions
 
             modelBuilder.Entity<RoleMessage>(entity =>
             {
-                entity.HasKey(x => new {x.GuildId, x.ChannelId, x.MessageId});
+                entity.HasKey(x => new { x.GuildId, x.ChannelId, x.MessageId });
 
                 entity.Property(x => x.GuildId)
                     .ValueGeneratedNever();

@@ -32,7 +32,7 @@ namespace SilKsPlugins.DiscordBot
             WorkingDirectory = Environment.CurrentDirectory;
 
             SetupSerilog();
-            
+
             hostBuilder
                 .UseContentRoot(WorkingDirectory)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())

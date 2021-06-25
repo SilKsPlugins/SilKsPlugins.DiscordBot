@@ -14,9 +14,9 @@ namespace SilKsPlugins.DiscordBot.Discord.Commands
         public string CommandPrefix => _configuration["Prefix"];
 
         public int DeleteStandardReplyDelay =>
-            (int) (_configuration.GetValue("Prefix:DeleteReplyDelay:Standard", 15f) * 1000);
+            (int)(_configuration.GetValue("Prefix:DeleteReplyDelay:Standard", 15f) * 1000);
 
         public int DeleteErrorReplyDelay =>
-            (int) (_configuration.GetValue("Prefix:DeleteReplyDelay:Error", 15f) * 1000);
+            (int)(_configuration.GetValue("Prefix:DeleteReplyDelay:Error", 15f) * 1000);
     }
 }
