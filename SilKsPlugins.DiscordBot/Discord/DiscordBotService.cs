@@ -5,9 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SilKsPlugins.DiscordBot.Components;
 using SilKsPlugins.DiscordBot.Discord.Commands;
-using SilKsPlugins.DiscordBot.Logging;
-using SilKsPlugins.DiscordBot.Logging.Configuration;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,30 +17,20 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly IConfiguration _configuration;
         private readonly CommandHandler _commandHandler;
         private readonly DiscordSocketClient _client;
-        private readonly DiscordSink _discordSink;
-        private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
         private readonly ComponentManager _componentManager;
-        private readonly IServiceProvider _serviceProvider;
 
-        public DiscordBotService(
-            Runtime runtime,
+        public DiscordBotService(Runtime runtime,
             ILogger<DiscordBotService> logger,
             IConfiguration configuration,
             CommandHandler commandHandler,
             DiscordSocketClient client,
-            DiscordSink discordSink,
-            IDiscordChannelLogConfigurer discordLogConfigurer,
-            ComponentManager componentManager,
-            IServiceProvider serviceProvider)
+            ComponentManager componentManager)
         {
             _runtime = runtime;
             _logger = logger;
             _configuration = configuration;
             _commandHandler = commandHandler;
             _client = client;
-            _discordSink = discordSink;
-            _serviceProvider = serviceProvider;
-            _discordLogConfigurer = discordLogConfigurer;
             _componentManager = componentManager;
         }
 
@@ -74,13 +61,6 @@ namespace SilKsPlugins.DiscordBot.Discord
 
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
-
-            _discordSink.Setup(_serviceProvider);
-
-            await foreach (var channel in _administrationDbContext.LogChannels)
-            {
-                _discordLogConfigurer.AddChannel(channel.ChannelId);
-            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -92,9 +72,9 @@ namespace SilKsPlugins.DiscordBot.Discord
             await _componentManager.StopAsync(cancellationToken);
         }
 
-        private Task OnLog(LogMessage arg)
+        private Task OnLog(LogMessage log)
         {
-            _logger.LogInformation(arg.Message);
+            _logger.LogInformation(log.Message);
 
             return Task.CompletedTask;
         }
