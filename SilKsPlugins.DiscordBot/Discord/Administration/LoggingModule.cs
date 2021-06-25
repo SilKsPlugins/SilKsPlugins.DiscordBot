@@ -1,9 +1,11 @@
 ﻿using Discord;
 using Discord.Commands;
 using JetBrains.Annotations;
+using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Databases.Administration.Models;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
+using SilKsPlugins.DiscordBot.Helpers;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System.Threading.Tasks;
 
@@ -43,17 +45,12 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
 
             if (_discordLogConfigurer.AddChannel(channelId))
             {
-                await ReplyAsync(embed: new EmbedBuilder()
-                    .WithTitle("This channel has been setup for logging.")
-                    .WithColor(Color.Green)
-                    .Build());
+                await ReplyAsync(
+                    embed: EmbedHelper.SimpleEmbed("This channel has been setup for logging.", Color.Green));
             }
             else
             {
-                await ReplyAsync(embed: new EmbedBuilder()
-                    .WithTitle("This channel is already setup for logging.")
-                    .WithColor(Color.Red)
-                    .Build());
+                throw new UserFriendlyException("This channel is already setup for logging.");
             }
         }
 
@@ -75,17 +72,12 @@ namespace SilKsPlugins.DiscordBot.Discord.Administration
 
             if (_discordLogConfigurer.RemoveChannel(channelId))
             {
-                await ReplyAsync(embed: new EmbedBuilder()
-                    .WithTitle("This channel has been removed from logging.")
-                    .WithColor(Color.Green)
-                    .Build());
+                await ReplyAsync(embed: EmbedHelper.SimpleEmbed("This channel has been removed from logging.",
+                    Color.Green));
             }
             else
             {
-                await ReplyAsync(embed: new EmbedBuilder()
-                    .WithTitle("This channel is not setup for logging.")
-                    .WithColor(Color.Red)
-                    .Build());
+                throw new UserFriendlyException("This channel is not setup for logging.");
             }
         }
     }
