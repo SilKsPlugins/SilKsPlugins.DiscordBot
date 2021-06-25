@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using SilKsPlugins.DiscordBot.Commands;
+using SilKsPlugins.DiscordBot.Discord.Commands;
 using System;
 using System.Threading.Tasks;
 

@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using JetBrains.Annotations;
-using SilKsPlugins.DiscordBot.Commands;
+using SilKsPlugins.DiscordBot.Discord.Commands;
 using SilKsPlugins.DiscordBot.Discord.Modules.RoleReactions.Services;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
 using System;

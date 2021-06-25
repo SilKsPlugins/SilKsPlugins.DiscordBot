@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using SilKsPlugins.DiscordBot.IoC;
 
-namespace SilKsPlugins.DiscordBot.Commands
+namespace SilKsPlugins.DiscordBot.Discord.Commands
 {
     [UsedImplicitly]
     public class CommandsServiceConfigurator : IServiceConfigurator

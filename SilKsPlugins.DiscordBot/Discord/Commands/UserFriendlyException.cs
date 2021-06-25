@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SilKsPlugins.DiscordBot.Commands
+namespace SilKsPlugins.DiscordBot.Discord.Commands
 {
     public class UserFriendlyException : Exception
     {

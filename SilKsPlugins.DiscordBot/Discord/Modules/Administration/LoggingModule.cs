@@ -1,9 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
 using JetBrains.Annotations;
-using SilKsPlugins.DiscordBot.Commands;
 using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Databases.Administration.Models;
+using SilKsPlugins.DiscordBot.Discord.Commands;
 using SilKsPlugins.DiscordBot.Discord.Preconditions;
 using SilKsPlugins.DiscordBot.Helpers;
 using SilKsPlugins.DiscordBot.Logging.Configuration;

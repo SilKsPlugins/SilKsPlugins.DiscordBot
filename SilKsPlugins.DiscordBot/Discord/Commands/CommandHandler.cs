@@ -7,7 +7,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Commands
+namespace SilKsPlugins.DiscordBot.Discord.Commands
 {
     public class CommandHandler : IDisposable
     {
