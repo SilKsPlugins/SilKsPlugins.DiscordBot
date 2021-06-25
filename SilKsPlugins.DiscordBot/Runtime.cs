@@ -127,11 +127,13 @@ namespace SilKsPlugins.DiscordBot
                 .AddDbContext<AdministrationDbContext>(ServiceLifetime.Transient)
                 .AddDbContext<RoleReactionsDbContext>(ServiceLifetime.Transient);
 
-            // Discord-related
-            services
-                .AddSingleton<CommandHandler>()
-                .AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
-                .AddTransient(_ => new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async}))
+            // Discord commands
+            services.AddSingleton<CommandHandler>()
+                .AddSingleton<CommandConfigAccessor>()
+                .AddTransient(_ => new CommandService(new CommandServiceConfig { DefaultRunMode = RunMode.Async }));
+
+            // Discord main
+            services.AddSingleton(_ => new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true}))
                 .AddHostedService<DiscordBotService>();
         }
     }
