@@ -1,12 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SilKsPlugins.DiscordBot.Components;
-using SilKsPlugins.DiscordBot.Databases.Administration;
-using SilKsPlugins.DiscordBot.Databases.RoleReactions;
 using SilKsPlugins.DiscordBot.Discord.Commands;
 using SilKsPlugins.DiscordBot.Logging;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
@@ -25,8 +22,6 @@ namespace SilKsPlugins.DiscordBot.Discord
         private readonly DiscordSocketClient _client;
         private readonly DiscordSink _discordSink;
         private readonly IDiscordChannelLogConfigurer _discordLogConfigurer;
-        private readonly AdministrationDbContext _administrationDbContext;
-        private readonly RoleReactionsDbContext _roleReactionsDbContext;
         private readonly ComponentManager _componentManager;
         private readonly IServiceProvider _serviceProvider;
 
@@ -38,8 +33,6 @@ namespace SilKsPlugins.DiscordBot.Discord
             DiscordSocketClient client,
             DiscordSink discordSink,
             IDiscordChannelLogConfigurer discordLogConfigurer,
-            AdministrationDbContext administrationDbContext,
-            RoleReactionsDbContext roleReactionsDbContext,
             ComponentManager componentManager,
             IServiceProvider serviceProvider)
         {
@@ -51,16 +44,11 @@ namespace SilKsPlugins.DiscordBot.Discord
             _discordSink = discordSink;
             _serviceProvider = serviceProvider;
             _discordLogConfigurer = discordLogConfigurer;
-            _administrationDbContext = administrationDbContext;
-            _roleReactionsDbContext = roleReactionsDbContext;
             _componentManager = componentManager;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _administrationDbContext.Database.MigrateAsync(cancellationToken);
-            await _roleReactionsDbContext.Database.MigrateAsync(cancellationToken);
-
             var token = _configuration["Token"];
 
             if (string.IsNullOrWhiteSpace(token) || token == "CHANGEME")
