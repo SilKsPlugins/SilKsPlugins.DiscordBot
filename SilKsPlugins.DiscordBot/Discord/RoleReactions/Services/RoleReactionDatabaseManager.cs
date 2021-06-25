@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
 {
-    public class RoleReactionManager : IRoleReactionManager
+    public class RoleReactionDatabaseManager : IRoleReactionDatabaseManager
     {
         private readonly RoleReactionsDbContext _dbContext;
 
-        public RoleReactionManager(RoleReactionsDbContext dbContext)
+        public RoleReactionDatabaseManager(RoleReactionsDbContext dbContext)
         {
             _dbContext = dbContext;
         }

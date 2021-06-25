@@ -2,7 +2,7 @@
 
 namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
 {
-    public interface IRoleReactionManager
+    public interface IRoleReactionDatabaseManager
     {
         Task<ulong?> GetRoleForMessage(ulong guildId, ulong channelId, ulong messageId);
 
