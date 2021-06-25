@@ -1,4 +1,5 @@
 ﻿using Discord.WebSocket;
+using JetBrains.Annotations;
 using SilKsPlugins.DiscordBot.Components;
 using SilKsPlugins.DiscordBot.Databases.Administration;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SilKsPlugins.DiscordBot.Logging
 {
+    [UsedImplicitly]
     public class LoggingComponent : IComponent
     {
         private readonly DiscordSocketClient _discordClient;
