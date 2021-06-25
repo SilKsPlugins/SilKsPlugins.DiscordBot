@@ -6,6 +6,8 @@ using Serilog.Events;
 using SilKsPlugins.DiscordBot.Logging.Configuration;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SilKsPlugins.DiscordBot.Logging
 {
@@ -54,12 +56,35 @@ namespace SilKsPlugins.DiscordBot.Logging
                         continue;
                     }
 
-                    channel.SendMessageAsync(embed: new EmbedBuilder()
+                    var embed = new EmbedBuilder()
                         .AddField(logEvent.Level.ToString(), message)
                         .WithCurrentTimestamp()
-                        .Build());
+                        .Build();
 
+                    if (logEvent.Exception == null)
+                    {
+                        Task.Run(async () =>
+                        {
+                            await channel.SendMessageAsync(embed: embed);
+                        });
+                    }
+                    else
+                    {
+                        var exceptionStr = logEvent.Exception.ToString();
 
+                        var stream = new MemoryStream();
+                        var writer = new StreamWriter(stream);
+                        writer.Write(exceptionStr);
+                        writer.Flush();
+                        stream.Position = 0;
+
+                        Task.Run(async () =>
+                        {
+                            await channel.SendMessageAsync(embed: embed);
+                            await channel.SendFileAsync(stream, "Exception.txt");
+                        });
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
