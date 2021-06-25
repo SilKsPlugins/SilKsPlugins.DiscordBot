@@ -48,7 +48,7 @@ namespace SilKsPlugins.DiscordBot.Discord
                 // method has returned resulting the application locking.
 
                 // ReSharper disable once MethodSupportsCancellation
-                await _runtime.Host.StopAsync();
+                await _runtime.Host.StopAsync(cancellationToken);
 
                 return;
             }
