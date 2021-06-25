@@ -68,8 +68,19 @@ namespace SilKsPlugins.DiscordBot.Commands
             }
             else if (result.Error != CommandError.UnknownCommand)
             {
-                _logger.LogWarning(
-                    $"Error ({result.Error}) occurred while executing command {context.Message.Content} - {result.ErrorReason}");
+                var exception = (result as ExecuteResult?)?.Exception;
+
+                if (exception != null)
+                {
+
+                    _logger.LogError(exception,
+                        $"Error ({result.Error}) occurred while executing command {context.Message.Content} - {result.ErrorReason}");
+                }
+                else
+                {
+                    _logger.LogError(
+                        $"Error ({result.Error}) occurred while executing command {context.Message.Content} - {result.ErrorReason}");
+                }
 
                 var reply = await context.Channel.SendMessageAsync(
                     embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
