@@ -1,7 +1,7 @@
 ﻿using SilKsPlugins.DiscordBot.MySql;
 using System;
 
-namespace SilKsPlugins.DiscordBot.Discord.RoleReactions
+namespace SilKsPlugins.DiscordBot.Databases.RoleReactions
 {
     public class RoleMessagesDbContext : MySqlDbContext
     {
