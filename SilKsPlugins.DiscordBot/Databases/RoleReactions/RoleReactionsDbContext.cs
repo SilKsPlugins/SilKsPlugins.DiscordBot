@@ -7,9 +7,11 @@ namespace SilKsPlugins.DiscordBot.Databases.RoleReactions
 {
     public class RoleReactionsDbContext : MySqlDbContext
     {
-        protected RoleReactionsDbContext(IServiceProvider serviceProvider) : base(serviceProvider)
+        public RoleReactionsDbContext(IServiceProvider serviceProvider) : base(serviceProvider)
         {
         }
+
+        public DbSet<RoleMessage> RoleMessages => Set<RoleMessage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,7 +19,10 @@ namespace SilKsPlugins.DiscordBot.Databases.RoleReactions
 
             modelBuilder.Entity<RoleMessage>(entity =>
             {
-                entity.HasKey(x => new {x.ChannelId, x.MessageId});
+                entity.HasKey(x => new {x.GuildId, x.ChannelId, x.MessageId});
+
+                entity.Property(x => x.GuildId)
+                    .ValueGeneratedNever();
 
                 entity.Property(x => x.ChannelId)
                     .ValueGeneratedNever();
@@ -29,7 +34,5 @@ namespace SilKsPlugins.DiscordBot.Databases.RoleReactions
                     .ValueGeneratedNever();
             });
         }
-
-        public DbSet<RoleMessage> RoleMessages => Set<RoleMessage>();
     }
 }
