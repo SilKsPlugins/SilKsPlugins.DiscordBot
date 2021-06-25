@@ -5,7 +5,7 @@ using SilKsPlugins.DiscordBot.Discord.Commands;
 using System;
 using System.Threading.Tasks;
 
-namespace SilKsPlugins.DiscordBot.Discord
+namespace SilKsPlugins.DiscordBot.Discord.Modules
 {
     public abstract class CustomModuleBase<T> : ModuleBase<T> where T : class, ICommandContext
     {
