@@ -100,9 +100,15 @@ namespace SilKsPlugins.DiscordBot
 
         private void ConfigureContainer(ContainerBuilder container)
         {
+            // Role reactions
             container.RegisterType<RoleReactionDatabaseManager>()
                 .AsSelf()
                 .As<IRoleReactionDatabaseManager>()
+                .InstancePerDependency();
+
+            container.RegisterType<RoleReactionMessageManager>()
+                .AsSelf()
+                .As<IRoleReactionMessageManager>()
                 .InstancePerDependency();
         }
 
