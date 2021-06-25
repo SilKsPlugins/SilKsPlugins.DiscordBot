@@ -3,11 +3,9 @@
 Commands:
   Prefix: "!"
 
-UserUpdates:
-  Reactions:
-    Subscribe: "✅"
-    Unsubscribe: "❌"
-  RoleName: "covid-updates"
+RoleReactions:
+  Subscribe: "✅"
+  Unsubscribe: "❌"
 
 Database:
   ConnectionStrings:
