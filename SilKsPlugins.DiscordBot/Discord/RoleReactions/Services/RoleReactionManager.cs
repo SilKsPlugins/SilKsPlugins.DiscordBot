@@ -6,9 +6,9 @@ namespace SilKsPlugins.DiscordBot.Discord.RoleReactions.Services
 {
     public class RoleReactionManager : IRoleReactionManager
     {
-        private readonly RoleMessagesDbContext _dbContext;
+        private readonly RoleReactionsDbContext _dbContext;
 
-        public RoleReactionManager(RoleMessagesDbContext dbContext)
+        public RoleReactionManager(RoleReactionsDbContext dbContext)
         {
             _dbContext = dbContext;
         }
