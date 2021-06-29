@@ -62,9 +62,12 @@ namespace SilKsPlugins.DiscordBot.Discord.Commands
                 _logger.LogDebug(
                     $"Successfully executed command {context.Message.Content} ({nameof(UserFriendlyException)}).");
 
-                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+                Task.Run(async () =>
+                {
+                    await Task.Delay(_configuration.DeleteErrorReplyDelay);
 
-                await reply.DeleteAsync();
+                    await reply.DeleteAsync();
+                });
             }
             else if (result.Error != CommandError.UnknownCommand)
             {
@@ -86,9 +89,12 @@ namespace SilKsPlugins.DiscordBot.Discord.Commands
                     embed: EmbedHelper.SimpleEmbed($"An error occurred while executing this command ({result.Error}).",
                         Color.Red));
 
-                await Task.Delay(_configuration.DeleteErrorReplyDelay);
+                Task.Run(async () =>
+                {
+                    await Task.Delay(_configuration.DeleteErrorReplyDelay);
 
-                await reply.DeleteAsync();
+                    await reply.DeleteAsync();
+                });
             }
         }
 
