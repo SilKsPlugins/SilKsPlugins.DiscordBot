@@ -1,4 +1,5 @@
 ﻿DiscordToken: "CHANGEME"
+ImperialPluginsApiKey: "CHANGEME"
 
 Database:
   ConnectionStrings:
