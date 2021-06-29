@@ -16,5 +16,20 @@ namespace SilKsPlugins.DiscordBot.Helpers
 
             return builder.Build();
         }
+
+        public static EmbedBuilder AddFieldSafe(this EmbedBuilder embedBuilder, string name, string value, bool inline = false)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = "\a";
+            }
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = "\a";
+            }
+
+            return embedBuilder.AddField(name, value, inline);
+        }
     }
 }
