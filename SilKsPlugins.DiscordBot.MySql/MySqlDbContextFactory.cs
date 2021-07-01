@@ -5,7 +5,7 @@ using System;
 
 namespace SilKsPlugins.DiscordBot.MySql
 {
-    public class MySqlDbContextFactory<TDbContext> : IDesignTimeDbContextFactory<TDbContext> where TDbContext : MySqlDbContext
+    public abstract class MySqlDbContextFactory<TDbContext> : IDesignTimeDbContextFactory<TDbContext> where TDbContext : MySqlDbContext
     {
         public TDbContext CreateDbContext(string[] args)
         {
