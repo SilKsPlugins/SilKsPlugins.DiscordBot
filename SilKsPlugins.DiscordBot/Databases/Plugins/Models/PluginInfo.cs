@@ -12,8 +12,6 @@
 
         public decimal? Price { get; set; }
 
-        public ulong? GuildId { get; set; }
-
         public ulong? ChannelId { get; set; }
 
         public string? Author { get; set; }
