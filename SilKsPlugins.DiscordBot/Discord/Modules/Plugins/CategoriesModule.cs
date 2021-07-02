@@ -32,7 +32,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
         {
             var prefix = _commandConfigAccessor.CommandPrefix;
             
-            await ReplyAndDeleteAsync($@"
+            await ReplyAsync($@"
 {prefix}categories help - View help for the '{prefix}categories' command.
 {prefix}categories list [brief | verbose] - View all categories.
 {prefix}categories add <id> <title> [category id] - Add a category.
@@ -96,7 +96,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
                 }
             }
 
-            await ReplyAndDeleteAsync(response);
+            await ReplyAsync(response);
         }
 
         [Command("categories add")]
