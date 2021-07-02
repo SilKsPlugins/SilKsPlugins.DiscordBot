@@ -11,6 +11,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
         public void ConfigureServices(ServiceConfiguratorContext context)
         {
             context.ServiceCollection.AddSingleton<MerchantIdAccessor>();
+            context.ServiceCollection.AddTransient<PluginManager>();
         }
     }
 }
