@@ -71,11 +71,6 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
                     foreach (var category in categories)
                     {
                         response += $"\n- {category.Title}";
-
-                        if (category.ChannelCategoryId != null)
-                        {
-                            response += $" <#{category.ChannelCategoryId}>";
-                        }
                     }
                 }
                 else
@@ -85,13 +80,8 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
                     foreach (var category in categories)
                     {
                         response += $"\n- Id: {category.Id}";
-                        response += $"  Title: {category.Title}";
-                        response += $"  Channel Category Id: ${category.ChannelCategoryId?.ToString() ?? "null"}";
-
-                        if (category.ChannelCategoryId != null)
-                        {
-                            response += $" (<#{category.ChannelCategoryId}>)";
-                        }
+                        response += $"\n  Title: {category.Title}";
+                        response += $"\n  Channel Category Id: {category.ChannelCategoryId?.ToString() ?? "null"}";
                     }
                 }
             }
