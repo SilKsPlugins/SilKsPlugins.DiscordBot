@@ -1,4 +1,6 @@
-﻿namespace SilKsPlugins.DiscordBot.Databases.Plugins.Models
+﻿using System;
+
+namespace SilKsPlugins.DiscordBot.Databases.Plugins.Models
 {
     public class PluginInfo
     {
@@ -10,11 +12,17 @@
 
         public string? Url { get; set; }
 
+        public string? IconUrl { get; set; }
+
         public decimal? Price { get; set; }
 
         public ulong? ChannelId { get; set; }
 
         public string? Author { get; set; }
+
+        public DateTimeOffset? CreationTime { get; set; }
+
+        public PluginPlatform Platforms { get; set; }
 
         public string? Content { get; set; }
 
