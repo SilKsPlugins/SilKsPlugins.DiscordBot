@@ -27,6 +27,8 @@ jobs:
         with:
           push: true
           tags: silksplugins/silksplugins-discord-bot:latest
-          
+          secrets: |
+            "github_token=${{ secrets.GITHUB_TOKEN }}"
+            
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
