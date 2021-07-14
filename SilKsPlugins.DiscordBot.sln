@@ -7,13 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilKsPlugins.DiscordBot", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EE8B46F-7A8C-49D1-A9CD-AB74758472A0}"
 	ProjectSection(SolutionItems) = preProject
-		Dockerfile = Dockerfile
 		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilKsPlugins.DiscordBot.MySql", "SilKsPlugins.DiscordBot.MySql\SilKsPlugins.DiscordBot.MySql.csproj", "{A2E8BE4D-9D07-4FB6-A3F1-4636E92D00A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilKsPlugins.DiscordBot.MySql", "SilKsPlugins.DiscordBot.MySql\SilKsPlugins.DiscordBot.MySql.csproj", "{A2E8BE4D-9D07-4FB6-A3F1-4636E92D00A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilKsPlugins.DiscordBot.Logging", "SilKsPlugins.DiscordBot.Logging\SilKsPlugins.DiscordBot.Logging.csproj", "{D246B602-8407-4648-8907-43EFEE1CD2BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilKsPlugins.DiscordBot.Logging", "SilKsPlugins.DiscordBot.Logging\SilKsPlugins.DiscordBot.Logging.csproj", "{D246B602-8407-4648-8907-43EFEE1CD2BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
