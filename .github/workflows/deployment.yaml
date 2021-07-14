@@ -22,3 +22,4 @@ jobs:
         args: up -d
         copy_stack_file: true
         stack_file_name: compose.yaml
+        deploy_path: ${{ secrets.DOCKER_DEPLOY_PATH }}
