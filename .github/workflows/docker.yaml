@@ -21,6 +21,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: List files
+        run: ls -R
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
