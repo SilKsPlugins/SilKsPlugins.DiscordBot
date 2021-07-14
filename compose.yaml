@@ -2,6 +2,7 @@ services:
   silksplugins-discordbot:
     image: ghcr.io/silksplugins/silksplugins-discordbot:latest
     container_name: silksplugins-discordbot
+    restart: unless-stopped
     volumes:
     - silksplugins-discordbot:/data
     networks:
