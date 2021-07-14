@@ -31,13 +31,11 @@ jobs:
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
-        env:
-          PACKAGES_TOKEN: ${{ steps.generate_token.outputs.token }}
         with:
           push: true
           tags: silksplugins/silksplugins-discord-bot:latest
           secrets: |
-            "github_token=${{ PACKAGES_TOKEN }}"
+            "github_token=${{ steps.generate_token.outputs.token }}"
             
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
