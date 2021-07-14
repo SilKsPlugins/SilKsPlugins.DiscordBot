@@ -20,13 +20,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Generate packages token
-        id: generate_token
-        uses: tibdex/github-app-token@v1
-        with:
-          app_id: ${{ secrets.GH_PACKAGES_APP_ID }}
-          private_key: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Build and push
         id: docker_build
@@ -35,7 +28,7 @@ jobs:
           push: true
           tags: silksplugins/silksplugins-discord-bot:latest
           secrets: |
-            "github_token=${{ steps.generate_token.outputs.token }}"
+            "github_token=${{ secrets.GH_PACKAGES_TOKEN }}"
             
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
