@@ -7,7 +7,9 @@ services:
     - silksplugins-discordbot
 
 volumes:
-  silksplugins-discordbot: {}
+  silksplugins-discordbot:
+    external:
+      name: silksplugins-discordbot
 
 networks:
   silksplugins-discordbot: {}
