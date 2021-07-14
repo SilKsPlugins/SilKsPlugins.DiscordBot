@@ -1,0 +1,13 @@
+services:
+  silksplugins-discordbot:
+    image: ghcr.io/silksplugins/silksplugin-discordbot
+    volumes:
+    - silksplugins-discordbot
+    networks:
+    - silksplugins-discordbot
+
+volumes:
+  silksplugins-discordbot: {}
+
+networks:
+  silksplugins-discordbot: {}
