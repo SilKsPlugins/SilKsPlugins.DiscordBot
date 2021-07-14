@@ -2,7 +2,7 @@ services:
   silksplugins-discordbot:
     image: ghcr.io/silksplugins/silksplugins-discordbot:latest
     volumes:
-    - silksplugins-discordbot
+    - silksplugins-discordbot:/data
     networks:
     - silksplugins-discordbot
 
