@@ -29,7 +29,6 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
         private readonly IRoleReactionDatabaseManager _roleReactionDatabaseManager;
         private readonly IRoleReactionMessageManager _roleReactionMessageManager;
 
-
         public PluginsModule(
             PluginManager pluginManager,
             CommandConfigAccessor commandConfigAccessor,
@@ -68,7 +67,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
             ");
         }
 
-        private Embed GetPluginEmbedAsync(PluginInfo plugin)
+        private Embed GetPluginEmbed(PluginInfo plugin)
         {
             var embedBuilder = new EmbedBuilder()
                 .WithTitle(plugin.Title);
@@ -77,7 +76,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
 
             if (plugin.Price != null && plugin.Price.Value != 0)
             {
-                descriptionParts.Add($"Price: **{plugin.Price:C} USD**");
+                descriptionParts.Add($"Price: **${plugin.Price:0.00} USD**");
             }
 
             if ((plugin.Platforms & PluginPlatform.All) != 0)
@@ -246,7 +245,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
                     var message =
                         pinnedMessages.FirstOrDefault(x => x.Author.Id == Context.Client.CurrentUser.Id) as IUserMessage;
 
-                    var embed = GetPluginEmbedAsync(plugin);
+                    var embed = GetPluginEmbed(plugin);
 
                     if (message == null)
                     {
@@ -399,7 +398,7 @@ namespace SilKsPlugins.DiscordBot.Discord.Modules.Plugins
                     var message =
                         pinnedMessages?.FirstOrDefault(x => x.Author.Id == Context.Client.CurrentUser.Id) as IUserMessage;
 
-                    //var embed = GetPluginEmbedAsync(plugin);
+                    //var embed = GetPluginEmbed(plugin);
 
                     if (message == null)
                     {
